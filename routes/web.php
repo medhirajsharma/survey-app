@@ -10,13 +10,15 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('surveys', SurveyController::class);
-Route::resource('surveys.questions', QuestionController::class)->shallow();
+Route::middleware(['auth'])->group(function () {
+    Route::resource('surveys', SurveyController::class);
+    Route::resource('surveys.questions', QuestionController::class)->shallow();
 
-Route::get('/surveys/{survey}/take', [SurveyResponseController::class, 'create'])->name('surveys.take');
-Route::post('/surveys/{survey}/take', [SurveyResponseController::class, 'store']);
-Route::get('/surveys/{survey}/report', [SurveyReportController::class, 'show'])->name('surveys.report');
-Route::get('/surveys/{survey}/report/export', [SurveyReportController::class, 'export'])->name('survey-reports.export');
+    Route::get('/surveys/{survey}/take', [SurveyResponseController::class, 'create'])->name('surveys.take');
+    Route::post('/surveys/{survey}/take', [SurveyResponseController::class, 'store']);
+    Route::get('/surveys/{survey}/report', [SurveyReportController::class, 'show'])->name('surveys.report');
+    Route::get('/surveys/{survey}/report/export', [SurveyReportController::class, 'export'])->name('survey-reports.export');
+});
 
 Route::get('/', function () {
     return view('welcome');
