@@ -82,8 +82,8 @@
                     </div>
 
                     <div class="mt-4">
-                        <a href="{{ route('surveys.take', $survey) }}" class="btn btn-primary">Take Survey</a>
-                        <button onclick="copyToClipboard('{{ route('surveys.take', $survey) }}')" class="btn btn-secondary">Share Survey</button>
+                        <a href="{{ route('public.surveys.take', $survey) }}" class="btn btn-primary">Take Survey</a>
+                        <button onclick="copyToClipboard('{{ route('public.surveys.take', $survey) }}')" class="btn btn-secondary">Share Survey</button>
                         <a href="{{ route('survey-reports.export', $survey) }}" class="btn btn-success">Export to CSV</a>
                     </div>
                 </div>

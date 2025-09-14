@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.public')
 
 @section('content')
 <div class="container">
@@ -8,9 +8,21 @@
                 <div class="card-header">{{ $survey->title }}</div>
 
                 <div class="card-body">
+                    @if (session('success'))
+                        <div class="alert alert-success" role="alert">
+                            {{ session('success') }}
+                        </div>
+                    @endif
+
+                    @if (session('error'))
+                        <div class="alert alert-danger" role="alert">
+                            {{ session('error') }}
+                        </div>
+                    @endif
+
                     <p>{{ $survey->description }}</p>
 
-                    <form action="{{ route('surveys.take', $survey) }}" method="POST">
+                    <form action="{{ route('public.surveys.take', $survey) }}" method="POST">
                         @csrf
 
                         <div class="form-group">

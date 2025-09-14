@@ -19,20 +19,20 @@
                         </thead>
                         <tbody>
                             @foreach ($surveys as $survey)
-                                <tr>
-                                    <td>{{ $survey->title }}</td>
-                                    <td>
-                                        <a href="{{ route('surveys.show', $survey) }}" class="btn btn-sm btn-info">View</a>
-                                        <a href="{{ route('surveys.edit', $survey) }}" class="btn btn-sm btn-primary">Edit</a>
-                                        <form action="{{ route('surveys.destroy', $survey) }}" method="POST" style="display: inline-block;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                                        </form>
-                                        <a href="{{ route('surveys.report', $survey) }}" class="btn btn-sm btn-secondary">Report</a>
-                                    </td>
-                                </tr>
-                            @endforeach
+    <tr>
+        <td>{{ $survey->title }}</td>
+        <td>
+            <a href="{{ route('surveys.show', $survey) }}" class="btn btn-sm btn-info">View</a>
+            <a href="{{ route('surveys.edit', $survey) }}" class="btn btn-sm btn-primary">Edit</a>
+            <form action="{{ route('surveys.destroy', $survey) }}" method="POST" style="display: inline-block;">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+            </form>
+            <a href="{{ route('surveys.report', $survey) }}" class="btn btn-sm btn-secondary">Report</a>
+        </td>
+    </tr>
+@endforeach
                         </tbody>
                     </table>
                 </div>

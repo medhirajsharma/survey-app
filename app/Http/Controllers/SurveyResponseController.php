@@ -16,6 +16,13 @@ class SurveyResponseController extends Controller
 
     public function store(Request $request, Survey $survey)
     {
+        $cookieName = 'survey_submitted_' . $survey->id;
+
+        if ($request->cookie($cookieName)) {
+            return redirect()->route('public.surveys.take', $survey)
+                ->with('error', 'You have already submitted this survey.');
+        }
+
         $request->validate([
             'name' => 'required|string|max:255',
             'answers' => 'required|array',
@@ -31,7 +38,8 @@ class SurveyResponseController extends Controller
             ]);
         }
 
-        return redirect()->route('surveys.report', $survey)
+        return redirect()->route('public.surveys.take', $survey)
+            ->withCookie(cookie($cookieName, true, 60 * 24 * 365)) // Set cookie for 1 year
             ->with('success', 'Thank you for taking the survey!');
     }
 }
