@@ -24,6 +24,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/surveys/{survey}/report/export', [SurveyReportController::class, 'export'])->name('survey-reports.export');
 });
 
-Auth::routes();
+Auth::routes(['register' => false, 'reset' => false]);
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
