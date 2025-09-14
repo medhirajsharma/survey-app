@@ -1,0 +1,18 @@
+create survey  forntend and backend
+
+backend 
+    laravel auth for admin
+    survey curd operation with qution and 4 option 
+    survey report each survey
+
+
+frontend
+    logo
+    fill name 
+    then choose any one option and save in database
+    then get result
+    survey share option
+
+
+
+using laravel bootstrap latest jquery and bootstrap icons
