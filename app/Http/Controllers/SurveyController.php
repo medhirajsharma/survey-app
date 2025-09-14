@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Survey;
@@ -12,7 +11,7 @@ class SurveyController extends Controller
      */
     public function index()
     {
-        $surveys = Survey::all();
+        $surveys = Survey::paginate(1);
         return view('surveys.index', compact('surveys'));
     }
 
@@ -30,7 +29,7 @@ class SurveyController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required|string|max:255',
+            'title'       => 'required|string|max:255',
             'description' => 'nullable|string',
         ]);
 
@@ -62,7 +61,7 @@ class SurveyController extends Controller
     public function update(Request $request, Survey $survey)
     {
         $request->validate([
-            'title' => 'required|string|max:255',
+            'title'       => 'required|string|max:255',
             'description' => 'nullable|string',
         ]);
 
