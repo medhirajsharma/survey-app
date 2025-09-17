@@ -9,7 +9,7 @@ class Option extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['text', 'question_id'];
+    protected $fillable = ['text', 'question_id', 'image_path'];
 
     public function question()
     {
