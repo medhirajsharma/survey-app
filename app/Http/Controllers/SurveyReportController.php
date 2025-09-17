@@ -38,7 +38,7 @@ class SurveyReportController extends Controller
 
     public function export(Survey $survey)
     {
-        $survey->load('questions.options', 'surveyResponses.answers.option');
+        $survey->load('questions.options', 'surveyResponses.answers.option', 'surveyResponses.vidhansabha');
 
         $csvFileName = 'survey_report_' . Str::slug($survey->title) . '.csv';
         $headers     = [
@@ -47,9 +47,10 @@ class SurveyReportController extends Controller
         ];
 
         $handle = fopen('php://temp', 'r+');
+        fprintf($handle, chr(0xEF).chr(0xBB).chr(0xBF));
 
         // Add CSV header
-        $headerRow = ['Respondent Name'];
+        $headerRow = ['Respondent Name', 'Mobile No', 'Vidhansabha'];
         foreach ($survey->questions as $question) {
             $headerRow[] = $question->text;
         }
@@ -57,7 +58,11 @@ class SurveyReportController extends Controller
 
         // Add CSV data
         foreach ($survey->surveyResponses as $response) {
-            $dataRow = [$response->name];
+            $dataRow = [
+                $response->name,
+                $response->mobile_no,
+                $response->vidhansabha->constituency_name ?? 'N/A',
+            ];
             foreach ($survey->questions as $question) {
                 $answer    = $response->answers->firstWhere('option.question_id', $question->id);
                 $dataRow[] = $answer ? $answer->option->text : 'N/A';
