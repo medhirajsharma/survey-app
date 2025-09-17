@@ -19,7 +19,12 @@
                             <h5 class="mb-3">Q: {{ $data['question']->text }}</h5>
                             @foreach ($data['options'] as $optionData)
                                 <div class="mb-3">
-                                    <p class="mb-1">{{ $optionData['option']->text }}</p>
+                                    <p class="mb-1">
+                                        @if ($optionData['option']->image_path)
+                                            <img src="{{ asset('storage/' . $optionData['option']->image_path) }}" alt="Option Image" width="100" class="ml-2">
+                                        @endif
+                                        {{ $optionData['option']->text }}
+                                    </p>
                                     <div class="progress" style="height: 25px;">
                                         <div class="progress-bar bg-info" role="progressbar" style="width: {{ $optionData['percentage'] }}%;" aria-valuenow="{{ $optionData['percentage'] }}" aria-valuemin="0" aria-valuemax="100">
                                             {{ $optionData['percentage'] }}% ({{ $optionData['count'] }} votes)

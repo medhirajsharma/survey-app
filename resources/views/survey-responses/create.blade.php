@@ -40,6 +40,9 @@
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="answers[{{ $question->id }}]" id="option-{{ $option->id }}" value="{{ $option->id }}" required>
                                         <label class="form-check-label" for="option-{{ $option->id }}">
+                                            @if ($option->image_path)
+                                                <img src="{{ asset('storage/' . $option->image_path) }}" alt="Option Image" width="100" class="ml-2">
+                                            @endif
                                             {{ $option->text }}
                                         </label>
                                     </div>

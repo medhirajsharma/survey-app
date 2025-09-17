@@ -30,7 +30,12 @@
                                     @endphp
                                     @foreach ($question->options as $option)
                                         <tr>
-                                            <td>{{ $option->text }}</td>
+                                            <td>
+                                                @if ($option->image_path)
+                                                    <img src="{{ asset('storage/' . $option->image_path) }}" alt="Option Image" width="50" class="ml-2">
+                                                @endif
+                                                 {{ $option->text }}
+                                            </td>
                                             <td>
                                                 <div class="progress">
                                                     @php
@@ -69,7 +74,15 @@
                                             @php
                                                 $answer = $response->answers->firstWhere('option.question_id', $question->id);
                                             @endphp
-                                            {{ $answer ? $answer->option->text : 'N/A' }}
+                                            @if ($answer)
+
+                                                @if ($answer->option->image_path)
+                                                    <img src="{{ asset('storage/' . $answer->option->image_path) }}" alt="Option Image" width="50" class="ml-2">
+                                                @endif
+                                                {{ $answer->option->text }}
+                                            @else
+                                                N/A
+                                            @endif
                                         </td>
                                     @endforeach
                                 </tr>
