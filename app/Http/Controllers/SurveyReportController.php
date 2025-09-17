@@ -2,16 +2,38 @@
 namespace App\Http\Controllers;
 
 use App\Models\Survey;
+use App\Models\Vidhansabha;
+use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 class SurveyReportController extends Controller
 {
-    public function show(Survey $survey)
+    public function show(Survey $survey, Request $request)
     {
-        $survey->load('questions.options.answers');                                                  // Load questions and their answers
-        $surveyResponses = $survey->surveyResponses()->with('answers.option.question')->paginate(2); // Paginate survey responses
+        $survey->load('questions.options.answers');
 
-        return view('survey-reports.show', compact('survey', 'surveyResponses'));
+        $query = $survey->surveyResponses()->with('answers.option.question', 'vidhansabha');
+
+        if ($request->filled('name')) {
+            $query->where('name', 'like', '%' . $request->name . '%');
+        }
+
+        if ($request->filled('mobile_no')) {
+            $query->where('mobile_no', 'like', '%' . $request->mobile_no . '%');
+        }
+
+        if ($request->filled('vidhansabha_id')) {
+            $query->where('vidhansabha_id', $request->vidhansabha_id);
+        }
+
+        if ($request->filled('sort') && in_array($request->sort, ['name', 'mobile_no', 'vidhansabha_id'])) {
+            $query->orderBy($request->sort, $request->direction ?? 'asc');
+        }
+
+        $surveyResponses = $query->paginate(10)->withQueryString();
+        $vidhansabhas = Vidhansabha::all();
+
+        return view('survey-reports.show', compact('survey', 'surveyResponses', 'vidhansabhas'));
     }
 
     public function export(Survey $survey)

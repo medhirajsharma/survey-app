@@ -30,6 +30,21 @@
                             <input type="text" name="name" id="name" class="form-control" required>
                         </div>
 
+                        <div class="form-group">
+                            <label for="mobile_no">Mobile No</label>
+                            <input type="text" name="mobile_no" id="mobile_no" class="form-control" required maxlength="10" pattern="[0-9]{10}" title="Please enter a 10-digit mobile number">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="vidhansabha_id">Vidhansabha</label>
+                            <select name="vidhansabha_id" id="vidhansabha_id" class="form-control" required>
+                                <option value="">Select Vidhansabha</option>
+                                @foreach ($vidhansabhas as $vidhansabha)
+                                    <option value="{{ $vidhansabha->id }}">{{ $vidhansabha->constituency_name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
                         <hr>
 
                         @foreach ($survey->questions as $key => $question)

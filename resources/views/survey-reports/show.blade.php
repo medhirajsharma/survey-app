@@ -56,10 +56,37 @@
                     <hr>
 
                     <h5>Respondents</h5>
+
+                    <form method="GET" action="{{ route('surveys.report', $survey) }}" class="mb-4">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <input type="text" name="name" class="form-control" placeholder="Name" value="{{ request('name') }}">
+                            </div>
+                            <div class="col-md-3">
+                                <input type="text" name="mobile_no" class="form-control" placeholder="Mobile No" value="{{ request('mobile_no') }}">
+                            </div>
+                            <div class="col-md-3">
+                                <select name="vidhansabha_id" class="form-control">
+                                    <option value="">All Vidhansabhas</option>
+                                    @foreach ($vidhansabhas as $vidhansabha)
+                                        <option value="{{ $vidhansabha->id }}" {{ request('vidhansabha_id') == $vidhansabha->id ? 'selected' : '' }}>
+                                            {{ $vidhansabha->constituency_name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <button type="submit" class="btn btn-primary">Filter</button>
+                                <a href="{{ route('surveys.report', $survey) }}" class="btn btn-secondary">Clear</a>
+                            </div>
+                        </div>
+                    </form>
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th>Respondent Name</th>
+                                <th><a href="{{ route('surveys.report', ['survey' => $survey, 'sort' => 'name', 'direction' => request('direction') === 'asc' ? 'desc' : 'asc']) }}">Respondent Name</a></th>
+                                <th><a href="{{ route('surveys.report', ['survey' => $survey, 'sort' => 'mobile_no', 'direction' => request('direction') === 'asc' ? 'desc' : 'asc']) }}">Mobile No</a></th>
+                                <th><a href="{{ route('surveys.report', ['survey' => $survey, 'sort' => 'vidhansabha_id', 'direction' => request('direction') === 'asc' ? 'desc' : 'asc']) }}">Vidhansabha</a></th>
                                 @foreach ($survey->questions as $question)
                                     <th>{{ $question->text }}</th>
                                 @endforeach
@@ -69,6 +96,8 @@
                             @foreach ($surveyResponses as $response) {{-- Use $surveyResponses directly --}}
                                 <tr>
                                     <td>{{ $response->name }}</td>
+                                    <td>{{ $response->mobile_no }}</td>
+                                    <td>{{ $response->vidhansabha->constituency_name ?? 'N/A' }}</td>
                                     @foreach ($survey->questions as $question)
                                         <td>
                                             @php
@@ -77,7 +106,7 @@
                                             @if ($answer)
 
                                                 @if ($answer->option->image_path)
-                                                    <img src="{{ asset('storage/' . $answer->option->image_path) }}" alt="Option Image" width="50" class="ml-2">
+                                                    <img src="{{ asset('storage/' . $answer->option->image_path) }}" alt="Option Image" width="20" class="ml-2">
                                                 @endif
                                                 {{ $answer->option->text }}
                                             @else
