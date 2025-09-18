@@ -45,6 +45,11 @@
                             </select>
                         </div>
 
+                        <div class="form-group">
+                            <label for="caste">Caste</label>
+                            <input type="text" name="caste" id="caste" class="form-control" required>
+                        </div>
+
                         <hr>
 
                         @foreach ($survey->questions as $key => $question)
@@ -56,7 +61,7 @@
                                         <input class="form-check-input" type="radio" name="answers[{{ $question->id }}]" id="option-{{ $option->id }}" value="{{ $option->id }}" required>
                                         <label class="form-check-label" for="option-{{ $option->id }}">
                                             @if ($option->image_path)
-                                                <img src="{{ asset('storage/' . $option->image_path) }}" alt="Option Image" width="100" class="ml-2">
+                                                <img src="{{ asset('storage/' . $option->image_path) }}" alt="Option Image" width="30" class="ml-2">
                                             @endif
                                             {{ $option->text }}
                                         </label>

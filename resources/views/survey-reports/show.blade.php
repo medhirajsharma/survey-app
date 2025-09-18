@@ -87,6 +87,7 @@
                                 <th><a href="{{ route('surveys.report', ['survey' => $survey, 'sort' => 'name', 'direction' => request('direction') === 'asc' ? 'desc' : 'asc']) }}">Respondent Name</a></th>
                                 <th><a href="{{ route('surveys.report', ['survey' => $survey, 'sort' => 'mobile_no', 'direction' => request('direction') === 'asc' ? 'desc' : 'asc']) }}">Mobile No</a></th>
                                 <th><a href="{{ route('surveys.report', ['survey' => $survey, 'sort' => 'vidhansabha_id', 'direction' => request('direction') === 'asc' ? 'desc' : 'asc']) }}">Vidhansabha</a></th>
+                                <th>Caste</th>
                                 @foreach ($survey->questions as $question)
                                     <th>{{ $question->text }}</th>
                                 @endforeach
@@ -98,6 +99,7 @@
                                     <td>{{ $response->name }}</td>
                                     <td>{{ $response->mobile_no }}</td>
                                     <td>{{ $response->vidhansabha->constituency_name ?? 'N/A' }}</td>
+                                    <td>{{ $response->caste ?? 'N/A' }}</td>
                                     @foreach ($survey->questions as $question)
                                         <td>
                                             @php

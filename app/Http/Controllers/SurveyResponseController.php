@@ -29,11 +29,12 @@ class SurveyResponseController extends Controller
             'name' => 'required|string|max:255',
             'mobile_no' => 'required|string|digits:10',
             'vidhansabha_id' => 'required|exists:vidhansabhas,id',
+            'caste' => 'required|string|max:255',
             'answers' => 'required|array',
             'answers.*' => 'required|exists:options,id',
         ]);
 
-        $surveyResponse = $survey->surveyResponses()->create($request->only('name', 'mobile_no', 'vidhansabha_id'));
+        $surveyResponse = $survey->surveyResponses()->create($request->only('name', 'mobile_no', 'vidhansabha_id', 'caste'));
 
         foreach ($request->answers as $questionId => $optionId) {
             $surveyResponse->answers()->create([

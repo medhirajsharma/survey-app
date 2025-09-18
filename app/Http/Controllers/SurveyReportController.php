@@ -62,6 +62,7 @@ class SurveyReportController extends Controller
                 $response->name,
                 $response->mobile_no,
                 $response->vidhansabha->constituency_name ?? 'N/A',
+                $response->caste ?? 'N/A',
             ];
             foreach ($survey->questions as $question) {
                 $answer    = $response->answers->firstWhere('option.question_id', $question->id);
