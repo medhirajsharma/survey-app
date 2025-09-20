@@ -19,6 +19,9 @@
 <body>
     <div id="app">
         <main class="py-4">
+            <center>
+            <img src="/logo.png" alt="logo"   height="24" >
+            </center>
             @yield('content')
         </main>
     </div>
