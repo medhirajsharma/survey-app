@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Survey;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class SurveyController extends Controller
 {
@@ -29,11 +30,19 @@ class SurveyController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title'       => 'required|string|max:255',
-            'description' => 'nullable|string',
+            'title'            => 'required|string|max:255',
+            'description'      => 'nullable|string',
+            'meta_description' => 'nullable|string',
+            'meta_image'       => 'nullable|image|max:2048', // Max 2MB
         ]);
 
-        Survey::create($request->all());
+        $data = $request->all();
+
+        if ($request->hasFile('meta_image')) {
+            $data['meta_image'] = $request->file('meta_image')->store('surveys', 'public');
+        }
+
+        Survey::create($data);
 
         return redirect()->route('surveys.index')
             ->with('success', 'Survey created successfully.');
@@ -61,11 +70,23 @@ class SurveyController extends Controller
     public function update(Request $request, Survey $survey)
     {
         $request->validate([
-            'title'       => 'required|string|max:255',
-            'description' => 'nullable|string',
+            'title'            => 'required|string|max:255',
+            'description'      => 'nullable|string',
+            'meta_description' => 'nullable|string',
+            'meta_image'       => 'nullable|image|max:2048', // Max 2MB
         ]);
 
-        $survey->update($request->all());
+        $data = $request->all();
+
+        if ($request->hasFile('meta_image')) {
+            // Delete old image if exists
+            if ($survey->meta_image) {
+                Storage::disk('public')->delete($survey->meta_image);
+            }
+            $data['meta_image'] = $request->file('meta_image')->store('surveys', 'public');
+        }
+
+        $survey->update($data);
 
         return redirect()->route('surveys.index')
             ->with('success', 'Survey updated successfully.');

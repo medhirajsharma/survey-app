@@ -8,7 +8,7 @@ class Survey extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'description', 'uuid'];
+    protected $fillable = ['title', 'description', 'uuid', 'meta_description', 'meta_image'];
 
     protected $casts = [
         'created_at' => 'datetime',
