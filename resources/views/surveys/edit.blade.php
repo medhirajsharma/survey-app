@@ -35,6 +35,29 @@
                         </div>
 
                         <div class="form-group mb-3">
+                            <label>Results Visibility</label>
+                            <div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="results_visibility" id="results_visibility_show" value="show" {{ $survey->results_visibility == 'show' ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="results_visibility_show">Show</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="results_visibility" id="results_visibility_hide" value="hide" {{ $survey->results_visibility == 'hide' ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="results_visibility_hide">Hide</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="results_visibility" id="results_visibility_datetime" value="datetime" {{ $survey->results_visibility == 'datetime' ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="results_visibility_datetime">Schedule</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group mb-3" id="results_visible_from_group" style="display: {{ $survey->results_visibility == 'datetime' ? 'block' : 'none' }};">
+                            <label for="results_visible_from">Results Visible From</label>
+                            <input type="datetime-local" name="results_visible_from" id="results_visible_from" class="form-control" value="{{ $survey->results_visible_from ? \Carbon\Carbon::parse($survey->results_visible_from)->format('Y-m-d\TH:i') : '' }}">
+                        </div>
+
+                        <div class="form-group mb-3">
                             <label for="meta_description">Meta Description</label>
                             <textarea name="meta_description" id="meta_description" class="form-control">{{ $survey->meta_description }}</textarea>
                         </div>

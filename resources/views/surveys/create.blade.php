@@ -32,6 +32,29 @@
                         </div>
 
                         <div class="form-group mb-3">
+                            <label>Results Visibility</label>
+                            <div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="results_visibility" id="results_visibility_show" value="show" checked>
+                                    <label class="form-check-label" for="results_visibility_show">Show</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="results_visibility" id="results_visibility_hide" value="hide">
+                                    <label class="form-check-label" for="results_visibility_hide">Hide</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="results_visibility" id="results_visibility_datetime" value="datetime">
+                                    <label class="form-check-label" for="results_visibility_datetime">Schedule</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group mb-3" id="results_visible_from_group" style="display: none;">
+                            <label for="results_visible_from">Results Visible From</label>
+                            <input type="datetime-local" name="results_visible_from" id="results_visible_from" class="form-control">
+                        </div>
+
+                        <div class="form-group mb-3">
                             <label for="meta_description">Meta Description</label>
                             <textarea name="meta_description" id="meta_description" class="form-control"></textarea>
                         </div>
@@ -56,6 +79,14 @@
         $('#vidhansabha_id').select2({
             placeholder: "Select Vidhansabha",
             allowClear: true
+        });
+
+        $('input[name="results_visibility"]').change(function() {
+            if ($(this).val() === 'datetime') {
+                $('#results_visible_from_group').show();
+            } else {
+                $('#results_visible_from_group').hide();
+            }
         });
     });
 </script>

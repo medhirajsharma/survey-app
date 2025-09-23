@@ -8,11 +8,12 @@ class Survey extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'description', 'uuid', 'meta_description', 'meta_image', 'vidhansabha_id'];
+    protected $fillable = ['title', 'description', 'uuid', 'meta_description', 'meta_image', 'vidhansabha_id', 'results_visibility', 'results_visible_from'];
 
     protected $casts = [
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
+        'results_visible_from' => 'datetime',
     ];
 
     protected static function boot()

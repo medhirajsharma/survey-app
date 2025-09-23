@@ -2,6 +2,7 @@
 
 @push('meta')
     @php
+        use Carbon\Carbon;
         $metaDescription = $survey->meta_description ?? "See the survey results for '" . $survey->title . "'";
         $metaImage = null;
 
@@ -73,40 +74,49 @@
                 </div>
             </div>
 
-            <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0">Overall Results</h5>
-                    <span class="badge bg-secondary rounded-pill">Total Responses: {{ $totalResponses }}</span>
-                </div>
-                <div class="card-body">
-                    @foreach ($questionResults as $questionId => $data)
-                        <div class="mb-4">
-                            <h6 class="fw-bold">{{ $data['question']->text }}</h6>
-                            @foreach ($data['options'] as $optionData)
-                                <div class="mb-2">
-                                    <div class="d-flex justify-content-between mb-1">
-                                        <span>
-                                            @if ($optionData['option']->image_path)
-                                                <img src="{{ asset('storage/' . $optionData['option']->image_path) }}" alt="Option Image" class="me-2" style="width: 24px; height: 24px; object-fit: cover;">
-                                            @endif
-                                            {{ $optionData['option']->text }}
-                                        </span>
-                                        <span class="text-muted small">{{ $optionData['count'] }} votes</span>
-                                    </div>
-                                    <div class="progress" style="height: 20px;">
-                                        <div class="progress-bar" role="progressbar" style="width: {{ $optionData['percentage'] }}%;" aria-valuenow="{{ $optionData['percentage'] }}" aria-valuemin="0" aria-valuemax="100">
-                                            {{ $optionData['percentage'] }}%
+            @if ($survey->results_visibility === 'show' || ($survey->results_visibility === 'datetime' && $survey->results_visible_from && Carbon::now()->gte($survey->results_visible_from)))
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Overall Results</h5>
+                        <span class="badge bg-secondary rounded-pill">Total Responses: {{ $totalResponses }}</span>
+                    </div>
+                    <div class="card-body">
+                        @foreach ($questionResults as $questionId => $data)
+                            <div class="mb-4">
+                                <h6 class="fw-bold">{{ $data['question']->text }}</h6>
+                                @foreach ($data['options'] as $optionData)
+                                    <div class="mb-2">
+                                        <div class="d-flex justify-content-between mb-1">
+                                            <span>
+                                                @if ($optionData['option']->image_path)
+                                                    <img src="{{ asset('storage/' . $optionData['option']->image_path) }}" alt="Option Image" class="me-2" style="width: 24px; height: 24px; object-fit: cover;">
+                                                @endif
+                                                {{ $optionData['option']->text }}
+                                            </span>
+                                            <span class="text-muted small">{{ $optionData['count'] }} votes</span>
+                                        </div>
+                                        <div class="progress" style="height: 20px;">
+                                            <div class="progress-bar" role="progressbar" style="width: {{ $optionData['percentage'] }}%;" aria-valuenow="{{ $optionData['percentage'] }}" aria-valuemin="0" aria-valuemax="100">
+                                                {{ $optionData['percentage'] }}%
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            @endforeach
-                        </div>
-                        @if (!$loop->last)
-                            <hr class="my-4">
-                        @endif
-                    @endforeach
+                                @endforeach
+                            </div>
+                            @if (!$loop->last)
+                                <hr class="my-4">
+                            @endif
+                        @endforeach
+                    </div>
                 </div>
-            </div>
+            @else
+                <div class="alert alert-info text-center d-none" role="alert">
+                    Overall results are not yet visible.
+                    @if ($survey->results_visibility === 'datetime' && $survey->results_visible_from)
+                        They will be available from {{ \Carbon\Carbon::parse($survey->results_visible_from)->format('Y-m-d H:i:s') }}.
+                    @endif
+                </div>
+            @endif
 
             <div class="text-center mt-4">
                 <h5 class="fw-bold mb-3">Share these results:</h5>

@@ -38,12 +38,18 @@ class SurveyController extends Controller
             'meta_description' => 'nullable|string',
             'meta_image'       => 'nullable|image|max:2048', // Max 2MB
             'vidhansabha_id'   => 'nullable|exists:vidhansabhas,id',
+            'results_visibility' => 'required|in:show,hide,datetime',
+            'results_visible_from' => 'nullable|date',
         ]);
 
         $data = $request->all();
 
         if ($request->hasFile('meta_image')) {
             $data['meta_image'] = $request->file('meta_image')->store('surveys', 'public');
+        }
+
+        if ($data['results_visibility'] !== 'datetime') {
+            $data['results_visible_from'] = null;
         }
 
         Survey::create($data);
@@ -80,6 +86,8 @@ class SurveyController extends Controller
             'meta_description' => 'nullable|string',
             'meta_image'       => 'nullable|image|max:2048', // Max 2MB
             'vidhansabha_id'   => 'nullable|exists:vidhansabhas,id',
+            'results_visibility' => 'required|in:show,hide,datetime',
+            'results_visible_from' => 'nullable|date',
         ]);
 
         $data = $request->all();
@@ -90,6 +98,10 @@ class SurveyController extends Controller
                 Storage::disk('public')->delete($survey->meta_image);
             }
             $data['meta_image'] = $request->file('meta_image')->store('surveys', 'public');
+        }
+
+        if ($data['results_visibility'] !== 'datetime') {
+            $data['results_visible_from'] = null;
         }
 
         $survey->update($data);

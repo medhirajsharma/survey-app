@@ -31,7 +31,7 @@ class SurveyReportController extends Controller
         }
 
         $surveyResponses = $query->paginate(10)->withQueryString();
-        $vidhansabhas = Vidhansabha::all();
+        $vidhansabhas    = Vidhansabha::all();
 
         return view('survey-reports.show', compact('survey', 'surveyResponses', 'vidhansabhas'));
     }
@@ -47,7 +47,7 @@ class SurveyReportController extends Controller
         ];
 
         $handle = fopen('php://temp', 'r+');
-        fprintf($handle, chr(0xEF).chr(0xBB).chr(0xBF));
+        fprintf($handle, chr(0xEF) . chr(0xBB) . chr(0xBF));
 
         // Add CSV header
         $headerRow = ['Respondent Name', 'Mobile No', 'Vidhansabha'];
