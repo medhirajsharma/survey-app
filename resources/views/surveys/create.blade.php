@@ -22,6 +22,16 @@
                         </div>
 
                         <div class="form-group mb-3">
+                            <label for="vidhansabha_id">Vidhansabha (Optional)</label>
+                            <select name="vidhansabha_id" id="vidhansabha_id" class="form-control">
+                                <option value="">Select Vidhansabha</option>
+                                @foreach($vidhansabhas as $vidhansabha)
+                                    <option value="{{ $vidhansabha->id }}">{{ $vidhansabha->constituency_name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="form-group mb-3">
                             <label for="meta_description">Meta Description</label>
                             <textarea name="meta_description" id="meta_description" class="form-control"></textarea>
                         </div>
@@ -39,3 +49,14 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    $(document).ready(function() {
+        $('#vidhansabha_id').select2({
+            placeholder: "Select Vidhansabha",
+            allowClear: true
+        });
+    });
+</script>
+@endpush

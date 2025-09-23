@@ -79,14 +79,19 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating">
-                                        <select name="vidhansabha_id" id="vidhansabha_id" class="form-select form-select-sm" required>
-                                            <option value="" disabled selected>Select Vidhansabha</option>
-                                            @foreach ($vidhansabhas as $vidhansabha)
-                                                <option value="{{ $vidhansabha->id }}">{{ $vidhansabha->constituency_name }}</option>
-                                            @endforeach
-                                        </select>
-                                        <label for="vidhansabha_id">Vidhansabha</label>
-                                        <div class="invalid-feedback">Please select your Vidhansabha.</div>
+                                        @if($survey->vidhansabha_id)
+                                            <input type="hidden" name="vidhansabha_id" value="{{ $survey->vidhansabha_id }}">
+                                            <p class="form-control-plaintext"><strong>Vidhansabha:</strong> {{ $survey->vidhansabha->constituency_name }}</p>
+                                        @else
+                                            <select name="vidhansabha_id" id="vidhansabha_id" class="form-select form-select-sm" required>
+                                                <option value="" disabled selected>Select Vidhansabha</option>
+                                                @foreach ($vidhansabhas as $vidhansabha)
+                                                    <option value="{{ $vidhansabha->id }}">{{ $vidhansabha->constituency_name }}</option>
+                                                @endforeach
+                                            </select>
+                                            <label for="vidhansabha_id">Vidhansabha</label>
+                                            <div class="invalid-feedback">Please select your Vidhansabha.</div>
+                                        @endif
                                     </div>
                                 </div>
                                 <div class="col-md-6">

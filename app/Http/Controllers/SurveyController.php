@@ -1,7 +1,9 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Survey;
+use App\Models\Vidhansabha;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -21,7 +23,8 @@ class SurveyController extends Controller
      */
     public function create()
     {
-        return view('surveys.create');
+        $vidhansabhas = Vidhansabha::all();
+        return view('surveys.create', compact('vidhansabhas'));
     }
 
     /**
@@ -34,6 +37,7 @@ class SurveyController extends Controller
             'description'      => 'nullable|string',
             'meta_description' => 'nullable|string',
             'meta_image'       => 'nullable|image|max:2048', // Max 2MB
+            'vidhansabha_id'   => 'nullable|exists:vidhansabhas,id',
         ]);
 
         $data = $request->all();
@@ -61,7 +65,8 @@ class SurveyController extends Controller
      */
     public function edit(Survey $survey)
     {
-        return view('surveys.edit', compact('survey'));
+        $vidhansabhas = Vidhansabha::all();
+        return view('surveys.edit', compact('survey', 'vidhansabhas'));
     }
 
     /**
@@ -74,6 +79,7 @@ class SurveyController extends Controller
             'description'      => 'nullable|string',
             'meta_description' => 'nullable|string',
             'meta_image'       => 'nullable|image|max:2048', // Max 2MB
+            'vidhansabha_id'   => 'nullable|exists:vidhansabhas,id',
         ]);
 
         $data = $request->all();

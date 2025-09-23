@@ -8,7 +8,7 @@ class Survey extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'description', 'uuid', 'meta_description', 'meta_image'];
+    protected $fillable = ['title', 'description', 'uuid', 'meta_description', 'meta_image', 'vidhansabha_id'];
 
     protected $casts = [
         'created_at' => 'datetime',
@@ -37,5 +37,10 @@ class Survey extends Model
     public function surveyResponses()
     {
         return $this->hasMany(SurveyResponse::class);
+    }
+
+    public function vidhansabha()
+    {
+        return $this->belongsTo(Vidhansabha::class);
     }
 }

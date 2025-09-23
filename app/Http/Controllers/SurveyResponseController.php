@@ -12,6 +12,7 @@ class SurveyResponseController extends Controller
 {
     public function create(Survey $survey)
     {
+        $survey->load('vidhansabha');
         $vidhansabhas = Vidhansabha::all();
         return view('survey-responses.create', compact('survey', 'vidhansabhas'));
     }
@@ -25,16 +26,24 @@ class SurveyResponseController extends Controller
                 ->with('error', 'You have already submitted this survey.');
         }
 
-        $request->validate([
+        $validationRules = [
             'name' => 'required|string|max:255',
             'mobile_no' => 'required|string|digits:10',
-            'vidhansabha_id' => 'required|exists:vidhansabhas,id',
             'caste' => 'required|string|max:255',
             'answers' => 'required|array',
             'answers.*' => 'required|exists:options,id',
-        ]);
+        ];
 
-        $surveyResponse = $survey->surveyResponses()->create($request->only('name', 'mobile_no', 'vidhansabha_id', 'caste'));
+        if (!$survey->vidhansabha_id) {
+            $validationRules['vidhansabha_id'] = 'required|exists:vidhansabhas,id';
+        }
+
+        $request->validate($validationRules);
+
+        $data = $request->only('name', 'mobile_no', 'caste');
+        $data['vidhansabha_id'] = $survey->vidhansabha_id ?? $request->vidhansabha_id;
+
+        $surveyResponse = $survey->surveyResponses()->create($data);
 
         foreach ($request->answers as $questionId => $optionId) {
             $surveyResponse->answers()->create([
