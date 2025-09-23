@@ -33,14 +33,14 @@
                                 </div>
                             </div>
                             <div class="input-group mb-2">
-                                <input type="text" name="options[2][text]" class="form-control" placeholder="Option 3" required>
+                                <input type="text" name="options[2][text]" class="form-control" placeholder="Option 3 (Optional)">
                                 <div class="custom-file">
                                     <input type="file" name="options[2][image]" class="custom-file-input" id="option3Image">
                                     <label class="custom-file-label" for="option3Image">Choose file</label>
                                 </div>
                             </div>
                             <div class="input-group mb-2">
-                                <input type="text" name="options[3][text]" class="form-control" placeholder="Option 4" required>
+                                <input type="text" name="options[3][text]" class="form-control" placeholder="Option 4 (Optional)">
                                 <div class="custom-file">
                                     <input type="file" name="options[3][image]" class="custom-file-input" id="option4Image">
                                     <label class="custom-file-label" for="option4Image">Choose file</label>

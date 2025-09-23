@@ -19,20 +19,24 @@
 
                         <div class="form-group">
                             <label>Options</label>
-                            @foreach ($question->options as $key => $option)
+                            @for ($i = 0; $i < 4; $i++)
+                                @php
+                                    $option = $question->options->get($i);
+                                @endphp
                                 <div class="input-group mb-2">
-                                    <input type="text" name="options[{{ $key }}][text]" class="form-control" value="{{ $option->text }}" required>
+                                    <input type="hidden" name="options[{{ $i }}][id]" value="{{ $option ? $option->id : '' }}">
+                                    <input type="text" name="options[{{ $i }}][text]" class="form-control" placeholder="Option {{ $i + 1 }}{{ $i < 2 ? '' : ' (Optional)' }}" value="{{ $option ? $option->text : '' }}" {{ $i < 2 ? 'required' : '' }}>
                                     <div class="custom-file">
-                                        <input type="file" name="options[{{ $key }}][image]" class="custom-file-input" id="option{{ $key }}Image">
-                                        <label class="custom-file-label" for="option{{ $key }}Image">Choose file</label>
+                                        <input type="file" name="options[{{ $i }}][image]" class="custom-file-input" id="option{{ $i }}Image">
+                                        <label class="custom-file-label" for="option{{ $i }}Image">Choose file</label>
                                     </div>
                                 </div>
-                                @if ($option->image_path)
+                                @if ($option && $option->image_path)
                                     <div class="mb-2">
                                         <img src="{{ asset('storage/' . $option->image_path) }}" alt="Option Image" width="100">
                                     </div>
                                 @endif
-                            @endforeach
+                            @endfor
                         </div>
 
                         <button type="submit" class="btn btn-primary">Update Question</button>
