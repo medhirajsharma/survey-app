@@ -7,12 +7,14 @@ use App\Http\Controllers\SurveyResponseController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    $surveys = \App\Models\Survey::latest()->get();
+    return view('welcome', compact('surveys'));
 });
 
 Route::get('/public/surveys/{survey}/take', [SurveyResponseController::class, 'create'])->name('public.surveys.take');
 Route::post('/public/surveys/{survey}/take', [SurveyResponseController::class, 'store'])->name('public.surveys.store');
 Route::get('/public/surveys/{survey}/results/{surveyResponse}', [SurveyResponseController::class, 'showResults'])->name('public.surveys.results');
+Route::get('/surveys/{survey}/results', [\App\Http\Controllers\SurveyReportController::class, 'publicReport'])->name('surveys.results');
 
 Route::middleware(['auth'])->group(function () {
     Route::resource('surveys', SurveyController::class);

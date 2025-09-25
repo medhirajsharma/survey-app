@@ -36,6 +36,13 @@ class SurveyReportController extends Controller
         return view('survey-reports.show', compact('survey', 'surveyResponses', 'vidhansabhas'));
     }
 
+    public function publicReport(Survey $survey)
+    {
+        $survey->load('questions.options.answers');
+
+        return view('survey-reports.public-show', compact('survey'));
+    }
+
     public function export(Survey $survey)
     {
         $survey->load('questions.options', 'surveyResponses.answers.option', 'surveyResponses.vidhansabha');
