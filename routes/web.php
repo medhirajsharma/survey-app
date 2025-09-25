@@ -27,7 +27,7 @@ Route::get('/', function (Request $request) {
             });
     });
 
-    $surveys = $query->paginate(1);
+    $surveys = $query->paginate(9);
     return view('welcome', compact('surveys'));
 });
 
