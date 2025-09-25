@@ -14,9 +14,16 @@
 
     <div class="container py-5">
         <h2 class="text-center mb-4">Available Surveys</h2>
+
+        <form action="{{ url('/') }}" method="GET" class="mb-4">
+            <div class="input-group">
+                <input type="text" name="search" class="form-control" placeholder="Search surveys..." value="{{ request('search') }}">
+                <button class="btn btn-outline-secondary" type="submit">Search</button>
+            </div>
+        </form>
+
         <div class="row">
             @foreach ($surveys as $survey)
-                @if ($survey->results_visibility === 'show' || ($survey->results_visibility === 'datetime' && $survey->results_visible_from && \Carbon\Carbon::now()->gte($survey->results_visible_from)))
                 <div class="col-md-4 mb-4">
                     <div class="card h-100 shadow-sm">
                         @if ($survey->meta_image)
@@ -27,13 +34,18 @@
                             <p class="card-text">{{ \Illuminate\Support\Str::limit($survey->description, 100) }}</p>
                             <div class="mt-auto">
                                 <!-- <a href="{{ route('public.surveys.take', $survey) }}" class="btn btn-primary btn-sm">Take Survey</a> -->
-                                <a href="{{ route('surveys.results', $survey) }}" class="btn btn-info btn-sm text-white">View Results</a>
+
+                                    <a href="{{ route('surveys.results', $survey) }}" class="btn btn-info btn-sm text-white">View Results</a>
+
                             </div>
                         </div>
                     </div>
                 </div>
-                @endif
             @endforeach
+        </div>
+
+        <div class="d-flex justify-content-center mt-4">
+            {{ $surveys->links() }}
         </div>
     </div>
 

@@ -4,10 +4,30 @@ use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\SurveyController;
 use App\Http\Controllers\SurveyReportController;
 use App\Http\Controllers\SurveyResponseController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    $surveys = \App\Models\Survey::latest()->get();
+Route::get('/', function (Request $request) {
+    $query = \App\Models\Survey::latest();
+
+    if ($request->has('search')) {
+        $search = $request->get('search');
+        $query->where(function ($q) use ($search) {
+            $q->where('title', 'like', '%' . $search . '%')
+                ->orWhere('description', 'like', '%' . $search . '%');
+        });
+    }
+
+    $query->where(function ($q) {
+        $q->where('results_visibility', 'show')
+            ->orWhere(function ($q2) {
+                $q2->where('results_visibility', 'datetime')
+                    ->whereNotNull('results_visible_from')
+                    ->where('results_visible_from', '<=', \Carbon\Carbon::now());
+            });
+    });
+
+    $surveys = $query->paginate(1);
     return view('welcome', compact('surveys'));
 });
 
